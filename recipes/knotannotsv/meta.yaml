@@ -1,0 +1,58 @@
+{% set name = "knotannotsv" %}
+{% set version="1.1.4" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/mobidic/knotAnnotSV/archive/refs/tags/v{{version}}.tar.gz
+  sha256: 4e1c9d05c100f85ad48deb91c3f173f68d126b02a7fffb7d65212eef2c41fe25
+
+build:
+  number: 0
+  noarch: generic
+  
+requirements:
+  build:
+    - curl
+  host:
+    - perl >=5.26
+    - perl-sort-key >=1.33
+    - perl-yaml-libyaml >=0.88
+    - perl-excel-writer-xlsx
+  run:
+    - perl >=5.26
+    - perl-sort-key >=1.33
+    - perl-yaml-libyaml >=0.88
+    - perl-excel-writer-xlsx
+
+test:
+  commands:
+    - vep --help
+    - vep_convert_cache --help
+    - vep_install --help
+    - haplo --help
+    - variant_recoder --help
+
+about:
+  home: https://github.com/mobidic/knotAnnotSV
+  license: GPL-3.0
+  summary: "Scripts to create a customizable html or Excel file from an AnnotSV output."
+
+extra:
+  notes: |
+    This package installs only the variant effect predictor (VEP) library
+    code. To install data libraries, you can use the 'vep_install' command
+    installed along with it. For example, to install the VEP library for human
+    GRCh38 to a directory
+
+    vep_install -a cf -s homo_sapiens -y GRCh38 -c /output/path/to/GRCh38/vep --CONVERT
+
+    (note that vep_install is renamed from INSTALL.pl
+     to avoid having generic script names in the PATH)
+
+    The --CONVERT flag is not required but improves lookup speeds during
+    runs. See the VEP documentation for more details
+
+    http://www.ensembl.org/info/docs/tools/vep/script/vep_cache.html
